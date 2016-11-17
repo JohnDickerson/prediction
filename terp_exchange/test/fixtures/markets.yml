@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyString
+  num_shares: 1
+  volume: 1
+  last_price: 1.5
+  open: 2016-11-17
+  close: 2016-11-17
+
+two:
+  title: MyString
+  description: MyString
+  num_shares: 1
+  volume: 1
+  last_price: 1.5
+  open: 2016-11-17
+  close: 2016-11-17
