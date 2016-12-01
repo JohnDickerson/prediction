@@ -1,6 +1,10 @@
 class TradesController < ApplicationController
 
 #!!need to go back and decide on what to do if error
+#!!!redirect?
+#!! for the getters, do the returned objects have getters?
+#everytime add a user, add they add 0 shares of everything?
+#!add try and catch
 
     def sell_long(market_id, num_shares, user_id)
         price = calc_price(market_id, -1*num_shares, 'l')
@@ -131,12 +135,33 @@ class TradesController < ApplicationController
       #e^q1/b/(e^q1/b + e^q2/b)
       q1 = get_price(market_id);
       q2 = get_price(market_id);
+      b = get_b_val(market_id);
       return Math.exp(num_event/b)/(Math.exp(num_for/b) + Math.exp(num_against/b))
     end
 
-#    def get_cost(b,num_for,num_against)
-#        #b*log(e^q1/b + e^q2/b)
-#        b * Math.log(Math.exp(num_for/b) + Math.exp(num_against/b))
-#    end
+    def get_cost(b,num_for,num_against)
+        #b*log(e^q1/b + e^q2/b)
+        b * Math.log(Math.exp(num_for/b) + Math.exp(num_against/b))
+    end
+
+    def get_balance(id)
+        ans = Users.first(:conditions => "user_id = ?", id)
+        ans.balance
+    end
+
+    def get_trades(id)
+        ans = Users.first(:conditions => "user_id = ?", id)
+        ans.trades
+    end
+
+    def get_longs(u_id, m_id)
+        ans = Users.first(:conditions => "user_id = ? AND market_id = ?", u_id, m_id)
+        ans.longs
+    end
+
+    def get_shorts(u_id, m_id)
+        ans = Users.first(:conditions => "user_id = ? AND market_id = ?", u_id, m_id)
+        ans.shorts
+    end
 
 end
