@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   
   def marketData
       # add an argument for market id
-      data = Transacation.where(market_id: 1)
+      data = Transaction.where(market_id: 1)
       render :json => data
   end
 
