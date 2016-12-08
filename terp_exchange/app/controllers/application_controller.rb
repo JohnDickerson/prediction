@@ -5,6 +5,15 @@ class ApplicationController < ActionController::Base
     @controller_text = "Text from the controller!"
     render :index   # <-- name of the view, index.html.erb
   end
+  
+  def marketData
+      data = Transaction.where(market_id: params[:mid])
+      render :json => data
+  end
+
+  def marketGraph
+      render :market
+  end
 
   # Access the currently logged in user
   private
