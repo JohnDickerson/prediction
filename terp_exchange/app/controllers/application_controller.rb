@@ -7,9 +7,12 @@ class ApplicationController < ActionController::Base
   end
   
   def marketData
-      # add an argument for market id
-      data = Transaction.where(market_id: 1)
+      data = Transaction.where(market_id: params[:mid])
       render :json => data
+  end
+
+  def marketGraph
+      render :market
   end
 
   # Access the currently logged in user
