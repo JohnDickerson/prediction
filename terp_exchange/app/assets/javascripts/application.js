@@ -12,9 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.easing
-//= require tether
 //= require bootstrap
-//= require bootstrap-sprockets
 //= require turbolinks
-//= require freelancer
+//= require_tree .
