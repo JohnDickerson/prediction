@@ -87,8 +87,10 @@
 
     <!-- add prices -->
     <script>
+        $.getJSON('marketprices.json', function(json) {doStuff(json);});
+        setInterval(function() {
          $.getJSON('marketprices.json', function(json) {doStuff(json);});
-
+         }, 5000)
           //next step: preiodically update
 
          
