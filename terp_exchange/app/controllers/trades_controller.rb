@@ -6,6 +6,16 @@ class TradesController < ApplicationController
 #everytime add a user, add they add 0 shares of everything?
 #!add try and catch
 
+    
+
+    def allMarkets
+
+        data = Market.all.map { |market|
+           {id:market.id, price_long:calc_price(market.id,1,'l'),  price_short:calc_price(market.id,1,'s')}
+        }
+        render :json => data
+    end
+
     def sell_long(market_id, num_shares, user_id)
         price = calc_price(market_id, -1*num_shares, 'l')
         #!!!!!!go back and handle error case
@@ -116,9 +126,11 @@ class TradesController < ApplicationController
 
     def calc_price(market_id, num_shares, flag)
         #get num shares bought for and against from table
-        q1 = get_longs(market_id);
-        q2 = get_short(market_id;
-        b = get_b_val(market_id);
+        q1 = get_longs(market_id)
+        q2 = get_shorts(market_id)
+        # get_b_val not instantiated, also markets don't have b value field yet
+        # b = get_b_val(market_id)
+        b = 1.5
         if flag == 'l'
             c1= get_cost(b,q1+num_shares,q2)
         elsif flag == 's'
@@ -128,14 +140,16 @@ class TradesController < ApplicationController
         end
         c2 = get_cost(b,q1,q2)
         #C(newnums) - C(old nums)
-        return c1 - c2
+
+        #Round?
+        return (c1 - c2).round(2)
     end
 
     def get_price(market_id)
       #e^q1/b/(e^q1/b + e^q2/b)
-      q1 = get_price(market_id);
-      q2 = get_price(market_id);
-      b = get_b_val(market_id);
+      q1 = get_price(market_id)
+      q2 = get_price(market_id)
+      b = get_b_val(market_id)
       return Math.exp(num_event/b)/(Math.exp(num_for/b) + Math.exp(num_against/b))
     end
 
@@ -144,24 +158,48 @@ class TradesController < ApplicationController
         b * Math.log(Math.exp(num_for/b) + Math.exp(num_against/b))
     end
 
+
+    # def get_balance(id)
+    #     ans = Users.first(:conditions => "user_id = ?", id)
+    #     ans.balance
+    # end
+
+    # def get_trades(id)
+    #     ans = Users.first(:conditions => "user_id = ?", id)
+    #     ans.trades
+    # end
+
+    # def get_longs(u_id, m_id)
+    #     ans = Users.first(:conditions => "user_id = ? AND market_id = ?", u_id, m_id)
+    #     ans.longs
+    # end
+
+    # def get_shorts(u_id, m_id)
+    #     ans = Users.first(:conditions => "user_id = ? AND market_id = ?", u_id, m_id)
+    #     ans.shorts
+    # end
+
     def get_balance(id)
-        ans = Users.first(:conditions => "user_id = ?", id)
+        ans = Users.where(:id => id).first
         ans.balance
     end
 
     def get_trades(id)
-        ans = Users.first(:conditions => "user_id = ?", id)
+        ans = Users.where(:id => id).first
         ans.trades
     end
 
-    def get_longs(u_id, m_id)
-        ans = Users.first(:conditions => "user_id = ? AND market_id = ?", u_id, m_id)
-        ans.longs
+    # Do we need user id for these?
+    def get_longs(id)
+        ans = Market.where(:id => id).first
+        # Market table doesn't have fields for long or short
+        ans.num_shares
     end
 
-    def get_shorts(u_id, m_id)
-        ans = Users.first(:conditions => "user_id = ? AND market_id = ?", u_id, m_id)
-        ans.shorts
+    def get_shorts(id)
+        ans = Market.where(:id => id).first
+        # Market table doesn't have fields for long or short
+        ans.num_shares
     end
 
 end

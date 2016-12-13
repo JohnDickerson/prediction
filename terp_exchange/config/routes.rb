@@ -9,5 +9,6 @@ Rails.application.routes.draw do
   match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]
   match 'graph/:mid.json', to: 'application#marketData', via: [:get]
   match 'graph/:mid', to: 'application#marketGraph', via: [:get]
+  match 'marketprices.json', to: 'trades#allMarkets', via: [:get]
 
 end
