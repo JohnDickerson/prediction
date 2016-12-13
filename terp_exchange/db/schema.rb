@@ -15,8 +15,11 @@ ActiveRecord::Schema.define(version: 20161117204716) do
   create_table "markets", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
+    t.float    "b_val"
     t.integer  "num_shares"
     t.integer  "volume"
+    t.integer  "longs"
+    t.integer  "shorts"
     t.float    "last_price"
     t.date     "open"
     t.date     "close"

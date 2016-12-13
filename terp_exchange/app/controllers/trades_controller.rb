@@ -128,9 +128,7 @@ class TradesController < ApplicationController
         #get num shares bought for and against from table
         q1 = get_longs(market_id)
         q2 = get_shorts(market_id)
-        # get_b_val not instantiated, also markets don't have b value field yet
-        # b = get_b_val(market_id)
-        b = 1.5
+        b = get_b_val(market_id)
         if flag == 'l'
             c1= get_cost(b,q1+num_shares,q2)
         elsif flag == 's'
@@ -179,6 +177,11 @@ class TradesController < ApplicationController
     #     ans.shorts
     # end
 
+    def get_b_val(id)
+        ans = Market.where(:id => id).first
+        ans.b_val
+    end
+
     def get_balance(id)
         ans = Users.where(:id => id).first
         ans.balance
@@ -192,14 +195,12 @@ class TradesController < ApplicationController
     # Do we need user id for these?
     def get_longs(id)
         ans = Market.where(:id => id).first
-        # Market table doesn't have fields for long or short
-        ans.num_shares
+        ans.longs
     end
 
     def get_shorts(id)
         ans = Market.where(:id => id).first
-        # Market table doesn't have fields for long or short
-        ans.num_shares
+        ans.shorts
     end
 
 end
