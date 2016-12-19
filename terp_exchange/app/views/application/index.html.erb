@@ -87,14 +87,25 @@
 
     <!-- add prices -->
     <script>
-        $.getJSON('marketprices.json', function(json) {doStuff(json);});
+        $.getJSON('marketprices.json', function(json) {updatePriceFirst(json);});
         setInterval(function() {
-         $.getJSON('marketprices.json', function(json) {doStuff(json);});
+         $.getJSON('marketprices.json', function(json) {updatePrice(json);});
          }, 5000)
           //next step: preiodically update
 
+        function updatePriceFirst(json) {
+            var sample = json;
+            sample.map(function(d) {
+                $("#buy" + d.id + "long").html('$' + d.price_long);
+                $("#buy" + d.id + "long").click(function() {clickBuyShare(d.id,"long")});
+                $("#sell" + d.id + "long").html('$' + d.price_long);
+                $("#buy" + d.id + "short").html('$' + d.price_short);
+                $("#buy" + d.id + "short").click(function() {clickBuyShare(d.id,"short")});
+                $("#sell" + d.id + "short").html('$' + d.price_short);
+            })
+        }
          
-        function doStuff(json) {
+        function updatePrice(json) {
             var sample = json;
             sample.map(function(d) {
                 $("#buy" + d.id + "long").html('$' + d.price_long);
@@ -102,6 +113,15 @@
                 $("#buy" + d.id + "short").html('$' + d.price_short);
                 $("#sell" + d.id + "short").html('$' + d.price_short);
             })
+        }
+
+        function clickBuyShare(id,flag) {
+            $.getJSON('buy/' + id + "_" +flag, function(json) {buySuccess(json);});
+            console.log("ok");
+        }
+
+        function buySuccess(json) {
+            console.log(json.result);
         }
     </script>
 <% else %>
