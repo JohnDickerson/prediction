@@ -9,8 +9,12 @@
             </div>
             <hr />
             <div class="row">
+                <!--
                 <h4 class="text-center">When will McKeldin Mall Construction End?</h4>
                 <p>Construction on McKeldin Mall began on June 20, 2016 and was expected to end by September of 2016. As of December 1, 2016, there is still orange fencing up around McKeldin Mall. Construction will be considered complete when 100% of the fencing is taken down. When do you think construction will end?</p>
+                -->
+                <h4 class="text-center">Can YOU Predict It?</h4>
+                <p>TerpExchange is an online platform for UMD students to predict the outcomes of several events happening on campus or around the world. You have <b id="balance">$<%= User.where(:id => session[:user_id]).first.balance.round(2) =%></b> to use, and will be awared $1 for every correct decision at the end of the day.
                 <table class="table" style="margin-top: 20px">
                     <thead>
                         <tr>
@@ -24,60 +28,60 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>September 2016</td>
+                            <td>We get 20 users by 12/20/2016?</td>
                             <td><button id="buy1long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell1long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy1short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell1short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph1" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                         <tr>
-                            <td>October 2016</td>
+                            <td>Panthers beat Redskins</td>
                             <td><button id="buy2long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell2long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy2short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell2short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph2" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                         <tr>
-                            <td>November 2016</td>
+                            <td>Electoral College defects</td>
                             <td><button id="buy3long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell3long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy3short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell3short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph3" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                         <tr>
-                            <td>December 2016</td>
+                            <td>It reaches 40 degrees in College Park today</td>
                             <td><button id="buy4long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell4long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy4short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell4short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph4" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                         <tr>
-                            <td>January 2017</td>
+                            <td>Rob Kardashian and Blac Chyna get back together</td>
                             <td><button id="buy5long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell5long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy5short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell5short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph5" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                         <tr>
-                            <td>February 2017</td>
+                            <td>CMSC330 reddit thread starts after grades are posted</td>
                             <td><button id="buy6long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell6long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy6short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell6short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph6" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                         <tr>
-                            <td>March or Later</td>
+                            <td>We get an A on our paper</td>
                             <td><button id="buy7long" type="button" class="btn btn-xs btn-success">$0.30</button></td>
                             <td><button id="sell7long" type="button" class="btn btn-xs btn-success">$0.25</button></td>
                             <td><button id="buy7short" type="button" class="btn btn-xs btn-info">$0.75</button></td>
                             <td><button id="sell7short" type="button" class="btn btn-xs btn-info">$0.70</button></td>
-                            <td><button type="button" class="btn btn-xs btn-default">Display</button></td>
+                            <td><button id="graph7" type="button" class="btn btn-xs btn-default">Display</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -86,6 +90,7 @@
     </section>
 
     <!-- add prices -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
         $.getJSON('marketprices.json', function(json) {updatePriceFirst(json);});
         setInterval(function() {
@@ -104,6 +109,7 @@
                 $("#buy" + d.id + "short").click(function() {clickBuyShare(d.id,"short")});
                 $("#sell" + d.id + "short").html('$' + d.price_short);
                 $("#sell" + d.id + "short").click(function() {clickSellShare(d.id,"short")});
+                $("#graph" + d.id).click(function() {showGraph(d.id)});
             })
         }
          
@@ -129,11 +135,247 @@
 
         function success(json) {
             console.log(json.result);
-            if (json.result == true) {
+            if (json.result === "true") {
+                $("#balance").html('$' + json.balance);
                 $.getJSON('marketprices.json', function(json) {updatePrice(json);});
             }
         }
+
+        function showGraph(id) {
+            var $div = $("<div>", {id: "graphback"});
+            var $graph = $("<div>", {id: "graph", style:"position:absolute;top:40%;left:40%; float:left;"});
+            var $button = $("<button>");
+            $button.html("Close");
+            $button.click(function() {destroyGraph($div)});
+            $div.append($graph);
+            $("#portfolio").append($div);
+            makeGraph(id);
+            $graph.append($button);
+        }
+
+        function destroyGraph(div) {
+            div.remove();
+        }
+
+        function makeGraph(mid) {
+            $.getJSON('graph/' + mid + '.json', function(json) {actuallyMakeGraph(json);});
+        }
+      //next step: preiodically update
+
+     
+      function actuallyMakeGraph(json) {
+        var sample = json;
+
+         sample = sample.map(function(o) {
+          return {date: new Date(o["timestamp"]),price: o["price"]};
+        }
+          );
+
+        console.log(sample);
+
+
+        sample.sort(function(a,b) {
+          if (a.date>b.date) {return 1;}
+          else if (b.date>a.date) {return -1;}
+          else {return 0;}
+          });
+
+        sample[sample.length] = {
+          date: new Date(),
+          price: sample[sample.length - 1].price
+        };
+
+
+        var prices = sample.map(function(d) {
+          return Math.abs(d.price);
+        });
+
+        var dates = sample.map(function(d) {
+          return d.date;
+        });
+
+        var bisectDate = d3.bisector(function(d) {
+          return d.date;
+        }).left;
+        var formatValue = d3.format(",.2f");
+        var formatCurrency = function(d) {
+          return "$" + formatValue(d);
+        };
+
+        var w = 400,
+          h = 200,
+          m = 20;
+
+        var timeScale = d3.scaleTime()
+          .domain([d3.min(dates),new Date()])
+          .range([0, w]),
+          linScale = d3.scaleLinear()
+          .domain([1, 0])
+          .range([0, h]);
+
+        var line = d3.line()
+          .x(function(d) {
+            return timeScale(d.date);
+          })
+          .y(function(d) {
+            return linScale(Math.abs(d.price));
+          }),
+          area = d3.area()
+          .x(function(d) {
+            return timeScale(d.date);
+          })
+          .y1(function(d) {
+            return linScale(Math.abs(d.price));
+          })
+          .y0(function(d) {
+            return h;
+          });
+
+        var graph = d3.select("#graph").append("svg:svg")
+          .attr("width", w + 4 * m)
+          .attr("height", h + 2 * m)
+          .append("svg:g")
+          .attr("transform", "translate(" + 2*m + "," + m + ")");
+
+        var yAxis = d3.axisLeft(linScale)
+          .tickSize(3)
+          .ticks(5)
+          .tickFormat(formatCurrency);
+
+        var xAxis = d3.axisBottom(timeScale)
+          .tickSize(-h)
+          .tickArguments([d3.timeDay.every(1)])
+          .tickFormat(d3.timeFormat("%m/%d"));
+
+        graph.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + h + ")")
+          .call(xAxis);
+          
+        graph.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(0," + 0 + ")")
+          .call(yAxis);
+
+        graph.datum(sample);
+        var pathArea = graph.append("svg:path").attr("class", "area").attr("d", area).transition("d");
+        var pathLine = graph.append("svg:path").attr("class", "line").attr("d", line).transition("d");
+
+
+
+        var focus = graph.append("g")
+          .attr("class", "focus")
+          .style("display", "none");
+
+        focus.append("circle")
+          .attr("r", 4.5);
+
+
+        focus.append("text")
+          .attr("x", 9)
+          .attr("y", -10)
+          .attr("dy", ".35em");
+
+        function mousemove() {
+          var x0 = timeScale.invert(d3.mouse(this)[0]),
+            i = bisectDate(sample, x0, 1),
+            d0 = sample[i - 1],
+            d1 = sample[i],
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+          focus.transition().duration(50).attr("transform", "translate(" + timeScale(d.date) + "," + linScale(Math.abs(d.price)) + ")");
+          focus.select("text").text(formatCurrency(Math.abs(d.price)));
+        }
+
+        function zoom() {
+          var x0 = timeScale.invert(d3.mouse(this)[0]),
+          i = bisectDate(sample, x0, 1);
+          d0 = sample[i - 1],
+          d1 = sample[i],
+          d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+          timeScale.domain([new Date(d.date.getFullYear(), d.date.getMonth(), d.date.getDay(),0), new Date(d.date.getFullYear(), d.date.getMonth(), d.date.getDay()+1,0)]);
+          linScale.domain([100,0]);
+          pathArea.attr("d", area);
+          pathLine.attr("d", line);
+        }
+
+        graph.append("rect")
+          .attr("class", "overlay")
+          .attr("width", w)
+          .attr("height", h)
+          .on("mouseover", function() {
+            focus.style("display", null);
+          })
+          .on("mouseout", function() {
+            focus.style("display", "none");
+          })
+          .on("mousemove", mousemove)
+          .on("click",zoom); // SKETCHY SKETCHY
+      }
     </script>
+    <style>
+        #graphback {
+            position: fixed;
+            left: 0;
+            top: 0;
+            opacity: 0.5;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+        }
+
+        #graph {
+          background-color: white;
+          opacity: 2;
+        }
+
+          svg {
+          font: 10px sans-serif;
+        }
+
+        path.line {
+          fill: none;
+          stroke: black;
+          stroke-width: 1.5px;
+        }
+
+        path.area {
+          fill: greenyellow;
+          opacity: 0.2;
+        }
+
+        .axis {
+          shape-rendering: crispEdges;
+        }
+
+        .x.axis line {
+          stroke:steelblue;
+          stroke-opacity: .3;
+        }
+
+        .x.axis .minor {
+          stroke-opacity: .5;
+        }
+
+        .x.axis path {
+        }
+
+        .y.axis line,
+        .y.axis path {
+          fill: none;
+          stroke: #000;
+        }
+
+        .overlay {
+          fill: none;
+          pointer-events: all;
+        }
+
+        .focus circle {
+          fill: none;
+          stroke: steelblue;
+        }
+
+    </style>
 <% else %>
     <!-- Login Screen -->
     <section id="contact" style="margin-top: 50px;">

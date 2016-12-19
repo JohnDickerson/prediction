@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20161219133603) do
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "market_id"
-    t.date     "timestamp"
+    t.datetime "timestamp"
     t.integer  "num_shares"
     t.float    "price"
     t.datetime "created_at", null: false

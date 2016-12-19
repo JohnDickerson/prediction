@@ -3,7 +3,7 @@ class CreateTransactions < ActiveRecord::Migration[5.0]
     create_table :transactions do |t|
       t.integer :user_id
       t.integer :market_id
-      t.date :timestamp
+      t.datetime :timestamp
       t.integer :num_shares
       t.float :price
 
