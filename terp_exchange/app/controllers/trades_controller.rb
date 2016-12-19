@@ -26,7 +26,7 @@ class TradesController < ApplicationController
         end
 
         user = User.where(:id => session[:user_id]).first
-        render :json => {result: result.to_s, balance:user.balance}
+        render :json => {result: result.to_s, balance:user.balance.round(2)}
     end
 
     #under construction
@@ -40,11 +40,11 @@ class TradesController < ApplicationController
         end
 
         user = User.where(:id => session[:user_id]).first
-        render :json => {result: result.to_s, balance:user.balance}
+        render :json => {result: result.to_s, balance:user.balance.round(2)}
     end
 
     def sell_long(market_id, user_id, num_shares)
-        price = calc_price(market_id, -1*num_shares, 'l')
+        price = -1*calc_price(market_id, num_shares, 'l')
         #!!!!!!go back and handle error case
         user_longs = get_longs(market_id, user_id)
         if num_shares > user_longs
@@ -67,7 +67,7 @@ class TradesController < ApplicationController
 
             #changing transactions data
             #!!!!add time
-            addTransaction(user_id,market_id,Time.zone.now,-1*num_shares,price,'l')
+            addTransaction(user_id,market_id,Time.now,-1*num_shares,price,'l')
             return true
         end
     end
@@ -96,7 +96,7 @@ class TradesController < ApplicationController
 
             #changing transactions data
             #!!!!add time
-            addTransaction(user_id,market_id,Time.zone.now,-1*num_shares,price,'s')
+            addTransaction(user_id,market_id,Time.now,-1*num_shares,price,'s')
             return true
         end
     end
@@ -124,7 +124,7 @@ class TradesController < ApplicationController
 
             #changing transactions data
             #!!!!add time
-            addTransaction(user_id,market_id,Time.zone.now,num_shares,price,'l')
+            addTransaction(user_id,market_id,Time.now,num_shares,price,'l')
             return true
         end
     end
@@ -152,7 +152,7 @@ class TradesController < ApplicationController
 
             #changing transactions data
             #!!!!add time
-            addTransaction(user_id,market_id,Time.zone.now,num_shares,price,'s')
+            addTransaction(user_id,market_id,Time.now,num_shares,price,'s')
             return true
         end
     end
