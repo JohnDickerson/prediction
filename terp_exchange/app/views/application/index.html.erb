@@ -99,9 +99,11 @@
                 $("#buy" + d.id + "long").html('$' + d.price_long);
                 $("#buy" + d.id + "long").click(function() {clickBuyShare(d.id,"long")});
                 $("#sell" + d.id + "long").html('$' + d.price_long);
+                $("#sell" + d.id + "long").click(function() {clickSellShare(d.id,"long")});
                 $("#buy" + d.id + "short").html('$' + d.price_short);
                 $("#buy" + d.id + "short").click(function() {clickBuyShare(d.id,"short")});
                 $("#sell" + d.id + "short").html('$' + d.price_short);
+                $("#sell" + d.id + "short").click(function() {clickSellShare(d.id,"short")});
             })
         }
          
@@ -117,6 +119,11 @@
 
         function clickBuyShare(id,flag) {
             $.getJSON('buy/' + id + "_" +flag, function(json) {buySuccess(json);});
+            console.log("ok");
+        }
+
+        function clickSellShare(id,flag) {
+            $.getJSON('sell/' + id + "_" +flag, function(json) {buySuccess(json);});
             console.log("ok");
         }
 

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   match 'graph/:mid', to: 'application#marketGraph', via: [:get]
   match 'marketprices.json', to: 'trades#allMarkets', via: [:get]
   match 'buy/:input', to: 'trades#buyShares', via: [:get]
-  match 'sell/:input', to: 'trades#buyShares', via: [:get]
+  match 'sell/:input', to: 'trades#sellShares', via: [:get]
 
 
 end

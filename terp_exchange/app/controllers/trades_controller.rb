@@ -25,7 +25,8 @@ class TradesController < ApplicationController
             result = buy_short(mid.to_i,session[:user_id],1)
         end
 
-        render :json => {result: result.to_s}
+        user = User.where(:id => session[:user_id]).first
+        render :json => {result: result.to_s, balance:user}
     end
 
     #under construction
@@ -41,57 +42,61 @@ class TradesController < ApplicationController
         render :json => {result: result.to_s}
     end
 
-    def sell_long(market_id, num_shares, user_id)
+    def sell_long(market_id, user_id, num_shares)
         price = calc_price(market_id, -1*num_shares, 'l')
         #!!!!!!go back and handle error case
-        user_longs = get_longs(user_id, market_id)
+        user_longs = get_longs(market_id, user_id)
         if num_shares > user_longs
             puts "You don't own this."
+            return false
         else
             # changing user data
-            balance = get_balances(user_id)
+            balance = get_balance(user_id)
             new_balance = balance - price
             set_balance(user_id, new_balance)
-            trades = get_trades(user_id)
-            set_trades(user_id, trades + num_shares)
+            #trades = get_trades(user_id)
+            #set_trades(user_id, trades + num_shares)
 
             # changing shares data
-            set_longs(user_id, market_id, user_longs - num_shares)
+            #set_longs(user_id, market_id, user_longs - num_shares)
 
             # changing market data
-            market_longs = get_longs(market_id)
-            set_longs(market_id, market_longs - num_shares)
+            market_longs = get_longs(market_id, user_id)
+            #set_longs(market_id, market_longs - num_shares)
 
             #changing transactions data
             #!!!!add time
-            add_transaction(market_id, user_id, num_shares, 0, cost, cost/num_shares, get_price(market_id))
+            addTransaction(user_id,market_id,Time.zone.now,-1*num_shares,price,'l')
+            return true
         end
     end
 
-    def sell_short(market, num_shares)
+    def sell_short(market_id, user_id, num_shares)
         price = calc_price(market_id, -1*num_shares, 's')
         #!!!!!!go back and handle error case
-        user_shorts = get_shorts(user_id, market_id)
+        user_shorts = get_shorts(market_id, user_id)
         if num_shares > user_shorts
             puts "You don't own this."
+            return false
         else
             # changing user data
-            balance = get_balances(user_id)
+            balance = get_balance(user_id)
             new_balance = balance - price
             set_balance(user_id, new_balance)
-            trades = get_trades(user_id)
-            set_trades(user_id, trades + num_shares)
+            #trades = get_trades(user_id)
+            #set_trades(user_id, trades + num_shares)
 
             # changing shares data
-            set_shorts(user_id, market_id, user_shorts - num_shares)
+            #set_shorts(user_id, market_id, user_shorts - num_shares)
 
             # changing market data
-            market_shorts = get_shorts(market_id)
-            set_shorts(market_id, market_shorts - num_shares)
+            market_shorts = get_shorts(market_id, user_id)
+            #set_shorts(market_id, market_shorts - num_shares)
 
             #changing transactions data
             #!!!!add time
-            add_transaction(market_id, user_id, 0, num_shares, cost, cost/num_shares, get_price(market_id))
+            addTransaction(user_id,market_id,Time.zone.now,-1*num_shares,price,'s')
+            return true
         end
     end
 
@@ -118,8 +123,7 @@ class TradesController < ApplicationController
             # set_longs(user_id, market_id, user_longs + num_shares)
 
             # changing market data
-            market_longs = get_longs(market_id)
-            set_longs(market_id, market_longs + num_shares)
+            market_longs = get_longs(market_id,nil)
 
             #changing transactions data
             #!!!!add time
@@ -147,8 +151,7 @@ class TradesController < ApplicationController
             # set_longs(user_id, market_id, user_longs + num_shares)
 
             # changing market data
-            market_shorts = get_shorts(market_id)
-            set_longs(market_id, market_shorts + num_shares)
+            market_shorts = get_shorts(market_id,nil)
 
             #changing transactions data
             #!!!!add time
@@ -164,22 +167,45 @@ class TradesController < ApplicationController
         transaction.timestamp = time
         transaction.num_shares = num_shares
         transaction.price = price
+        transaction.save
         market = Market.where(:id => market_id).first
         market.num_shares = market.num_shares + 1
         if flag == 'l'
-            market.longs = market.longs + 1
-            market.last_price = price
+            market.update_column(:longs,market.longs + num_shares)
+            market.update_column(:last_price,price.abs)
         else
-            market.shorts = market.shorts + 1
-            market.last_price = 1 - price
+            market.update_column(:shorts,market.shorts + num_shares)
+            market.update_column(:last_price,price.abs)
+        end
+        shares = Share.where(:user_id => user_id, :market_id => market_id)
+        if (shares.size == 0) then
+            share = Share.new
+            share.user_id = user_id
+            share.market_id = market_id
+            if flag == 'l'
+                share.longs = num_shares
+                share.shorts = 0
+            else
+                share.longs = 0
+                share.shorts = num_shares
+            end
+            puts share.to_json
+            share.save
+        else
+            share = shares.first
+            if flag == 'l'
+                share.update_column(:longs,share.longs + num_shares)
+            else 
+                share.update_column(:shorts,share.shorts + num_shares)
+            end
         end
 
     end
 
     def calc_price(market_id, num_shares, flag)
         #get num shares bought for and against from table
-        q1 = get_longs(market_id)
-        q2 = get_shorts(market_id)
+        q1 = get_longs(market_id,nil)
+        q2 = get_shorts(market_id,nil)
         b = get_b_val(market_id)
         if flag == 'l'
             c1= get_cost(b,q1+num_shares,q2)
@@ -237,14 +263,15 @@ class TradesController < ApplicationController
     def get_balance(id)
         ans = User.where(:id => id).first
         if ans.balance == nil then
-            ans.balance = 20 # OR WHATEVER THE BASE IS
+            ans.update_column(:balance,20) # OR WHATEVER THE BASE IS
+            #puts ans.to_json
         end
         ans.balance
     end
 
     def set_balance(id, new_balance)
         ans = User.where(:id => id).first
-        ans.balance = new_balance
+        ans.update_column(:balance,new_balance)
     end
 
     def get_trades(id)
@@ -253,24 +280,32 @@ class TradesController < ApplicationController
     end
 
     # Do we need user id for these?
-    def get_longs(id)
-        ans = Market.where(:id => id).first
-        ans.longs
+    def get_longs(mid,uid)
+        if (mid) then
+            ans = Share.where(:market_id => mid, :user_id =>mid).first
+            if ans then
+                return ans.longs
+            else
+                return 0
+            end
+        else
+            ans = Market.where(:id => mid).first
+            return ans.longs
+        end
     end
 
-    def get_shorts(id)
-        ans = Market.where(:id => id).first
-        ans.shorts
-    end
-
-    def set_longs(id, new_longs)
-        ans = Market.where(:id => id).first
-        ans.longs = new_longs
-    end
-
-    def set_shorts(id, new_shorts)
-        ans = Market.where(:id => id).first
-        ans.shorts = new_shorts
+    def get_shorts(mid,uid)
+        if (uid) then
+            ans = Share.where(:market_id => mid, :user_id =>mid).first
+            if ans then
+                return ans.shorts
+            else
+                return 0
+            end
+        else
+            ans = Market.where(:id => mid).first
+            return ans.shorts
+        end
     end
 
 end
