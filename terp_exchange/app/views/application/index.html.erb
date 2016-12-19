@@ -118,17 +118,20 @@
         }
 
         function clickBuyShare(id,flag) {
-            $.getJSON('buy/' + id + "_" +flag, function(json) {buySuccess(json);});
+            $.getJSON('buy/' + id + "_" +flag, function(json) {success(json);});
             console.log("ok");
         }
 
         function clickSellShare(id,flag) {
-            $.getJSON('sell/' + id + "_" +flag, function(json) {buySuccess(json);});
+            $.getJSON('sell/' + id + "_" +flag, function(json) {success(json);});
             console.log("ok");
         }
 
-        function buySuccess(json) {
+        function success(json) {
             console.log(json.result);
+            if (json.result == true) {
+                $.getJSON('marketprices.json', function(json) {updatePrice(json);});
+            }
         }
     </script>
 <% else %>

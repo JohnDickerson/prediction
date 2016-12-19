@@ -26,7 +26,7 @@ class TradesController < ApplicationController
         end
 
         user = User.where(:id => session[:user_id]).first
-        render :json => {result: result.to_s, balance:user}
+        render :json => {result: result.to_s, balance:user.balance}
     end
 
     #under construction
@@ -39,7 +39,8 @@ class TradesController < ApplicationController
             result = sell_short(mid.to_i,session[:user_id],1)
         end
 
-        render :json => {result: result.to_s}
+        user = User.where(:id => session[:user_id]).first
+        render :json => {result: result.to_s, balance:user.balance}
     end
 
     def sell_long(market_id, user_id, num_shares)
@@ -104,10 +105,6 @@ class TradesController < ApplicationController
         price = calc_price(market_id, num_shares, 'l')
         #!!!!!!go back and handle error case
         balance = get_balance(user_id)
-        puts balance
-        puts balance == nil
-        puts price
-        puts price == nil
         if price > balance
             puts "You don't have enough money."
             return false
@@ -281,8 +278,8 @@ class TradesController < ApplicationController
 
     # Do we need user id for these?
     def get_longs(mid,uid)
-        if (mid) then
-            ans = Share.where(:market_id => mid, :user_id =>mid).first
+        if (uid) then
+            ans = Share.where(:market_id => mid, :user_id =>uid).first
             if ans then
                 return ans.longs
             else
@@ -296,7 +293,7 @@ class TradesController < ApplicationController
 
     def get_shorts(mid,uid)
         if (uid) then
-            ans = Share.where(:market_id => mid, :user_id =>mid).first
+            ans = Share.where(:market_id => mid, :user_id =>uid).first
             if ans then
                 return ans.shorts
             else
